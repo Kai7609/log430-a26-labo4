@@ -51,9 +51,9 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: labo04_db
+      MYSQL_USER: labo04
+      MYSQL_PASSWORD: labo04
     networks:
       - labo04-network
     ports:
