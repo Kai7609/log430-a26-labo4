@@ -117,6 +117,13 @@ def graphql_supplier():
 def metrics():
     return generate_latest(), 200, {"Content-Type": CONTENT_TYPE_LATEST}
 
+# Auto-generate Redis reports 2 seconds after startup (to give enough time for the DB to start up as well). Once done for the first time, repeat it recursively every 60s to refresh the cache.
+def generate_reports_and_cache():
+    threading.Timer(2.0, get_report_highest_spending_users, args=(True,)).start()
+    threading.Timer(2.0, get_report_best_selling_products, args=(True,)).start()
+    threading.Timer(60.0, generate_reports_and_cache).start()
+
 # Start Flask app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    generate_reports_and_cache()
