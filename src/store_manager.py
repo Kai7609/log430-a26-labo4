@@ -21,8 +21,10 @@ def health():
     return jsonify({'status':'ok'})
 
 # Write routes (Commands)
+counter_orders = Counter('orders', 'Total calls to /orders')
 @app.post('/orders')
 def post_orders():
+    counter_orders.inc()
     """Create a new order based on information on request body"""
     return create_order(request)
 
@@ -77,14 +79,18 @@ def get_stocks(product_id):
     """Get product stocks by product_id"""
     return get_stock(product_id)
 
+counter_highest_spenders = Counter('highest-spenders', 'Total calls to /orders/reports/highest-spenders')
 @app.get('/orders/reports/highest-spenders')
 def get_orders_highest_spending_users():
+    counter_highest_spenders.inc()
     """Get list of highest speding users, ordered by total expenditure"""
     rows = get_report_highest_spending_users()
     return jsonify(rows)
 
+counter_best_sellers = Counter('best-sellers', 'Total calls to /orders/reports/best-sellers')
 @app.get('/orders/reports/best-sellers')
 def get_orders_report_best_selling_products():
+    counter_best_sellers.inc()
     """Get list of best selling products, ordered by number of orders"""
     rows = get_report_best_selling_products()
     return jsonify(rows)
@@ -110,22 +116,6 @@ def graphql_supplier():
 @app.route("/metrics")
 def metrics():
     return generate_latest(), 200, {"Content-Type": CONTENT_TYPE_LATEST}
-
-# Counters
-counter_orders = Counter('orders', 'Total calls to /orders')
-@app.post('/orders')
-def post_orders():
-    counter_orders.inc()
-
-counter_highest_spenders = Counter('highest-spenders', 'Total calls to /orders/reports/highest-spenders')
-@app.post('/orders')
-def post_highest_spenders():
-    counter_highest_spenders.inc()
-
-counter_best_sellers = Counter('best-sellers', 'Total calls to /orders/reports/best-sellers')
-@app.post('/orders')
-def post_best_sellers():
-    counter_best_sellers.inc()
 
 # Start Flask app
 if __name__ == '__main__':
