@@ -108,8 +108,7 @@ def get_highest_spending_users_redis(skip_cache=False):
 
     except Exception as e:
         return {'error': str(e)}
-    finally:
-        return result
+    return result
 
 def get_best_selling_products_redis(skip_cache=False):
     """Get report of best selling products by quantity sold from Redis"""
@@ -151,7 +150,7 @@ def get_best_selling_products_redis(skip_cache=False):
 
     except Exception as e:
         return {'error': str(e)}
-return result
+    return result
 
 def get_highest_spending_users(skip_cache=False):
     """Get report of highest spending users"""
